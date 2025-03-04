@@ -1,0 +1,34 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+<div class="login">
+<div class="login-container">
+    <h2 class="login-title">Login</h2>
+    <form method="post" class="login-form">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="login-btn">Login</button>
+    </form>
+    
+    
+    <p><a href="{% url 'blog_app:password_reset' %}">Forgot Password?</a></p>
+
+    <p class="register-link">Don't have an account?  
+        <a href="{% url 'blog_app:register' %}" class="register-link-btn">Register here</a>
+    </p>
+
+
+    {% if form.errors %}
+    <ul class="error-list">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <li class="error-message">{{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+</div>
+{% endblock %}

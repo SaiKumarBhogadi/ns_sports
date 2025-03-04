@@ -1,0 +1,73 @@
+{% extends "blog_app/base.html" %}
+
+{% block content %}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+<style>
+.create-blog-container {
+    width: 90%;
+    margin-top: 100px !important;
+    max-width: 700px;
+    margin: 50px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+.create-blog-title {
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.form-group {
+    margin-bottom: 15px;
+}
+</style>
+
+<div class="create-blog-container">
+    <h2 class="create-blog-title">Create a Blog</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="id_title">Title</label>
+            <input type="text" name="title" id="id_title" class="form-control" required>
+        </div>
+
+        <div class="form-group">
+            <label for="id_content">Content</label>
+            <textarea name="content" id="id_content" class="form-control"></textarea>
+
+        </div>
+
+        <div class="form-group">
+            <label for="id_images">Upload Images</label>
+            <input type="file" name="images" id="id_images" class="form-control" multiple>
+        </div>
+
+        <div class="text-center">
+            <button type="submit" class="btn btn-success">📝 Publish Blog</button>
+            <a href="{% url 'blog_app:index' %}" class="btn btn-danger">❌ Cancel</a>
+        </div>
+    </form>
+</div>
+
+<!-- Include TinyMCE -->
+<script src="https://cdn.tiny.cloud/1/tvnvq0pj1wu0kcp0pbcvzxlfj51xko6goeemton8f1zk0vn0/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+    tinymce.init({
+        selector: '#id_content',  // Ensure this ID matches your textarea
+       
+        plugins: 'lists link image table code help wordcount',
+        toolbar: 'undo redo | formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+        setup: function (editor) {
+            editor.on('change', function () {
+                editor.save();  // Ensures the content is saved before form submission
+            });
+        }
+    });
+</script>
+
+{% endblock %}

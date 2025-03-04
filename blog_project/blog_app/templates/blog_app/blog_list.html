@@ -1,0 +1,26 @@
+{% extends "blog_app/base.html" %}
+
+{% block content %}
+<h2  style="margin-top: 100px;">All Blogs</h2>
+
+
+{% if user.is_authenticated %}
+    <a href="{% url 'blog_app:create_blog' %}" class="btn btn-success" >➕ Create New Blog</a>
+{% endif %}
+{% for blog in blogs %}
+    <div class="blog-card">
+        <h3><a href="{% url 'blog_app:blog_detail' blog.id %}">{{ blog.title }}</a></h3>
+        <p>By: {{ blog.author.username }} | {{ blog.created_at|date:"F j, Y" }}</p>
+        
+        {% for image in blog.images.all %}
+            <img src="{{ image.image.url }}" alt="Blog Image" width="200">
+        {% endfor %}
+
+        <p>{{ blog.content|truncatewords:30 }}</p>
+    </div>
+{% empty %}
+    <p>No blogs available.</p>
+{% endfor %}
+
+
+{% endblock %}

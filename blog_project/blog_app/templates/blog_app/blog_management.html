@@ -1,0 +1,128 @@
+{% extends 'blog_app/base.html' %}
+{% block content %}
+
+<div class="blog-management-container">
+    {% if user.is_superuser %}
+        <h3 class="blog-section-title" >Pending Blog Requests</h3>
+        <ul class="blog-list-group">
+            {% for blog in pending_blogs %}
+                <li class="blog-list-item">
+                    <span><strong>{{ blog.title }}</strong> by {{ blog.author.username }}</span>
+                    <a href="{% url 'blog_app:review_blog' blog.id %}" class="blog-action-btn blog-view-btn">View</a>
+                </li>
+            {% empty %}
+                <p>No pending blogs.</p>
+            {% endfor %}
+        </ul>
+    {% endif %}
+
+    <h3 class="blog-section-title">Your Approved Blogs</h3>
+    <ul class="blog-list-group">
+        {% for blog in approved_blogs %}
+            <li class="blog-list-item">
+                <a href="{% url 'blog_app:blog_detail' blog.id %}" class="blog-title-link">{{ blog.title }}</a>
+            </li>
+        {% empty %}
+            <p>No approved blogs yet.</p>
+        {% endfor %}
+    </ul>
+
+    <h3 class="blog-section-title">Your Pending Blogs</h3>
+    <ul class="blog-list-group">
+        {% for blog in pending_blogs %}
+            <li class="blog-list-item">
+                <span>{{ blog.title }} (Pending Approval)</span>
+            </li>
+        {% empty %}
+            <p>No pending blogs.</p>
+        {% endfor %}
+    </ul>
+
+    <h3 class="blog-section-title">Your Rejected Blogs</h3>
+    <ul class="blog-list-group">
+        {% for blog in rejected_blogs %}
+            <li class="blog-list-item">
+                <span>{{ blog.title }} (Rejected)</span>
+                <a href="{% url 'blog_app:edit_blog' blog.id %}" class="edit-btn">Edit & Resubmit</a>
+            </li>
+        {% empty %}
+            <p>No rejected blogs.</p>
+        {% endfor %}
+    </ul>
+</div>
+
+
+
+
+<style>
+  
+        .blog-management-container {
+            max-width: 800px;
+            margin-top: 100px !important;
+            margin-bottom: 50px !important;
+            margin: auto;
+            padding: 20px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .blog-section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 20px 0;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #2e87c3;
+        }
+        .blog-list-group {
+            list-style: none;
+            padding: 0;
+        }
+        .blog-list-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            padding: 15px;
+            color: red;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .blog-action-btn {
+            padding: 8px 12px;
+            border-radius: 5px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        .blog-view-btn { background: #007bff; }
+        .blog-approve-btn { background: #28a745; }
+        .blog-delete-btn { background: #dc3545; }
+        .edit-btn {
+            background: #ffc107;
+            padding: 8px 12px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            border-radius: 5px;
+        }
+        .blog-title-link {
+            text-decoration: none;
+            color: #007bff;
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            .blog-list-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .blog-action-btn, .edit-btn {
+                margin-top: 5px;
+                display: block;
+                text-align: center;
+            }
+        }
+    
+    
+</style>
+{% endblock %}

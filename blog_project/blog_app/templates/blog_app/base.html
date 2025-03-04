@@ -1,0 +1,122 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+   
+</head>
+<body>
+    
+    <nav class="custom-navbar">
+        <div class="custom-navbar-container">
+            <a href="#" class="custom-logo">
+                <img src="{% static 'images/logo.png' %}" alt="Enroll Now">
+            </a>
+            <div class="custom-menu-icon" onclick="toggleMenu()">☰</div>
+            <ul class="custom-nav-links">
+                <li><a href="{% url 'blog_app:index' %}">Home</a></li>
+                
+    
+                {% if user.is_authenticated %}
+                    <li><a href="{% url 'blog_app:profile' username=user.username %}">Profile</a></li>
+                    <li><a href="{% url 'blog_app:job_list' %}">Careers</a></li>
+                    <li><a href="{% url 'blog_app:blog_management' %}">Manage Blogs</a></li>
+                    <li><a href="{% url 'blog_app:contact' %}">Contact</a></li>
+                   
+
+                    
+                    <li><a href="{% url 'blog_app:logout' %}">Logout</a></li>
+                {% else %}
+                    <li><a href="{% url 'blog_app:login' %}">Login</a></li>
+                    <li><a href="{% url 'blog_app:register' %}">Register</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+    
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const menuIcon = document.querySelector(".custom-menu-icon");
+            const navLinks = document.querySelector(".custom-nav-links");
+    
+            menuIcon.addEventListener("click", function () {
+                navLinks.classList.toggle("custom-active");
+            });
+        });
+    </script>
+    
+
+    {% block content %}
+
+
+    {% endblock %}
+
+
+    <footer class="custom-footer">
+        <div class="footer-wrapper">
+            <div class="footer-row">
+                <!-- About Us -->
+                <div class="footer-col">
+                    <h3>About Us</h3>
+                    <img src="{% static 'images/logo.png' %}" alt="Logo" class="footer-logo" height="80px">
+                    <p>
+                        Our platform provides top-quality education and career resources to help students and professionals achieve their goals.
+                    </p>
+                    <div class="social-icons">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-google"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+    
+                <!-- Useful Links -->
+                <div class="footer-col">
+                    <h3>Useful Links</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Career Opportunities</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Downloads</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Quick Links -->
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="{% url 'blog_app:index' %}">Home</a></li>
+                        <li><a href="#">Latest Posts</a></li>
+                        <li ><a href="#">About Us</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+    
+                <!-- Contact Information -->
+                <div class="footer-col">
+                    <h3>Get in Touch</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Main Street, City, Country</p>
+                    <p><i class="fas fa-phone-alt"></i> +91 00000 00000</p>
+                    <p><i class="fas fa-envelope"></i> contact@yourwebsite.com</p>
+                    <img src="world-map.png" alt="World Map" class="footer-map">
+                </div>
+            </div>
+        </div>
+    
+        <div class="footer-bottom">
+            <p>Copyright © 2025 Your Website. All Rights Reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    
+    <script src="./script.js"></script>
+</body>
+</html>

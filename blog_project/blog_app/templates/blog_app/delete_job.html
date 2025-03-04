@@ -1,0 +1,89 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+<div class="delete-container">
+    <div class="delete-card">
+        <h2 class="delete-title">Are you sure you want to delete "<span class="job-title">{{ job.title }}</span>"?</h2>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="delete-btn-group">
+                <button type="submit" class="confirm-delete">🗑️ Yes, Delete</button>
+                <a href="{% url 'blog_app:job_list' %}" class="cancel-btn">❌ Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Centering the delete container */
+    .delete-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        background-color: #f8f9fc;
+        padding: 20px;
+    }
+
+    .delete-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 450px;
+        text-align: center;
+    }
+
+    .delete-title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #1d3557;
+        margin-bottom: 20px;
+    }
+
+    .job-title {
+        color: #dc3545;
+        font-weight: bold;
+    }
+
+    .delete-btn-group {
+        display: flex;
+        justify-content: center;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .confirm-delete {
+        background: #dc3545;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .confirm-delete:hover {
+        background: #c82333;
+    }
+
+    .cancel-btn {
+        text-decoration: none;
+        padding: 10px 20px;
+        background: #007bff;
+        color: white;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: bold;
+        display: inline-block;
+        transition: 0.3s ease;
+    }
+
+    .cancel-btn:hover {
+        background: #0056b3;
+    }
+</style>
+{% endblock %}

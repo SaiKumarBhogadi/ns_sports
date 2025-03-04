@@ -1,0 +1,211 @@
+{% extends 'blog_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="blog-review-container">
+    <h2 class="blog-title">{{ blog.title }}</h2>
+    <p><strong>By:</strong> {{ blog.author.username }}</p>
+    <p class="blog-content">{{ blog.content|safe }}</p>
+
+    <div class="blog-action-buttons">
+        <form action="{% url 'blog_app:approve_blog' blog.id %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="blog-action-btn blog-approve-btn">Approve</button>
+        </form>
+        <button class="blog-action-btn blog-reject-btn" onclick="openRejectModal()">Reject</button>
+    </div>
+    
+    <a href="{% url 'blog_app:profile' blog.author.username %}" class="back-to-profile">Back to Profile</a>
+</div>
+
+<!-- Reject Modal -->
+<div id="rejectModal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeRejectModal()">&times;</span>
+        <h3>Reject Blog Post</h3>
+        <form action="{% url 'blog_app:reject_blog' blog.id %}" method="post">
+            {% csrf_token %}
+            <label for="rejection_reason">Reason for Rejection:</label>
+            <textarea id="rejection_reason" name="rejection_reason" required></textarea>
+            <button type="submit" class="blog-action-btn blog-reject-confirm">Submit</button>
+        </form>
+    </div>
+</div>
+
+<style>
+.blog-review-container {
+    margin-top: 100px !important;
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+
+.blog-content {
+    font-size: 18px;
+    line-height: 2.8 !important;
+    padding: 10px !important;
+    word-wrap: break-word;
+}
+
+h1, h2, h3 , h4 , h5 , h6, strong {
+    padding-top: 10px;
+}
+.blog-content p {
+    margin-bottom: 15px !important;
+}
+
+.blog-content img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    margin: 10px auto;
+}
+
+.blog-content ol,
+.blog-content ul {
+    line-height: 1.8 !important; /* Ensures proper spacing */
+    margin-bottom: 15px !important; /* Adds space below the list */
+    padding-left: 20px !important; /* Ensures proper indentation */
+}
+
+.blog-content li {
+    line-height: 1.8 !important; /* Applies proper spacing between list items */
+    margin-bottom: 8px !important; /* Adds space between list items */
+}
+
+p{
+    line-height: 2.5;
+}
+.blog-content blockquote {
+    font-style: italic;
+    padding: 10px;
+    border-left: 4px solid #ccc;
+    margin: 10px 0;
+}
+
+
+.blog-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.blog-content {
+    font-size: 18px;
+    line-height: 2.6 !important;
+    margin-bottom: 20px;
+}
+
+.blog-action-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.blog-action-btn {
+    padding: 8px 16px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+    border: none;
+}
+
+.blog-approve-btn {
+    background: #28a745;
+    color: white;
+}
+
+.blog-approve-btn:hover {
+    background: #218838;
+}
+
+.blog-reject-btn {
+    background: #ffc107;
+    color: black;
+}
+
+.blog-reject-btn:hover {
+    background: #e0a800;
+}
+
+.back-to-profile {
+    display: inline-block;
+    margin-top: 15px;
+    font-size: 16px;
+    color: #007bff;
+    text-decoration: none;
+}
+
+.back-to-profile:hover {
+    color: #0056b3;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    width: 50%;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover {
+    color: black;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    margin: 10px 0;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+.blog-reject-confirm {
+    background: #dc3545;
+    color: white;
+}
+
+.blog-reject-confirm:hover {
+    background: #c82333;
+}
+</style>
+
+<script>
+function openRejectModal() {
+    document.getElementById('rejectModal').style.display = 'block';
+}
+
+function closeRejectModal() {
+    document.getElementById('rejectModal').style.display = 'none';
+}
+</script>
+
+{% endblock %}

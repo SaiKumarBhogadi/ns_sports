@@ -1,0 +1,74 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+
+<!-- Bootstrap CSS -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Font Awesome (for icons) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+<div class="container mt-5" style="margin-bottom: 50px;">
+    <h2 class="text-center fw-bold shadow-sm p-3 mb-4 bg-white rounded" style="margin-top: 100px !important;">
+        Job Applications
+    </h2>
+
+    <div class="table-responsive">
+        <table class="table table-striped table-hover table-bordered text-center align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Mobile</th>
+                    <th>Email</th>
+                    <th>Experience</th>
+                    <th>Resume</th>
+                    <th>Description</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for application in applications %}
+                <tr>
+                    <td class="fw-semibold">{{ application.name }}</td>
+                    <td>{{ application.mobile }}</td>
+                    <td>{{ application.email }}</td>
+                    <td>{{ application.experience }} years</td>
+                    <td>
+                        <a href="{{ application.resume.url }}" class="btn btn-primary btn-sm" target="_blank">
+                            View Resume <i class="fas fa-file-alt"></i>
+                        </a>
+                    </td>
+                    <td>{{ application.description }}</td>
+                    <td>
+                        {% if application.status == 'Pending' %}
+                            <span class="badge bg-warning text-dark">Pending</span>
+                        {% elif application.status == 'Approved' %}
+                            <span class="badge bg-success">Approved</span>
+                        {% else %}
+                            <span class="badge bg-danger">Rejected</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if application.status == 'Pending' %}
+                            <a href="{% url 'blog_app:update_application_status' application.id 'Approved' %}" class="btn btn-success btn-sm me-2">
+                                <i class="fas fa-check-circle"></i> Approve
+                            </a>
+                            <a href="{% url 'blog_app:update_application_status' application.id 'Rejected' %}" class="btn btn-danger btn-sm">
+                                <i class="fas fa-times-circle"></i> Reject
+                            </a>
+                        {% else %}
+                            <span class="text-muted">No Action</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="8" class="text-center text-muted">No job applications available.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

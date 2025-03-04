@@ -1,0 +1,81 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+<div class="job-form-container">
+    <h2 class="job-form-title">Edit Job</h2>
+
+    <div class="job-form-card">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="job-form-group">
+                {{ form.as_p }}
+            </div>
+            <button type="submit" class="job-form-btn">✏️ Update Job</button>
+        </form>
+    </div>
+</div>
+
+<style>
+    .job-form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 80vh;
+        background-color: #f8f9fc;
+        padding: 20px;
+    }
+
+    .job-form-title {
+        font-size: 2rem;
+        font-weight: bold;
+        color: #1d3557;
+        margin-bottom: 20px;
+    }
+
+    .job-form-card {
+        background: white;
+        padding: 30px;
+        border-radius: 12px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 500px;
+        text-align: center;
+    }
+
+    .job-form-group label {
+        font-weight: bold;
+        color: #333;
+        display: block;
+        margin: 10px 0 5px;
+    }
+
+    .job-form-group input,
+    .job-form-group textarea,
+    .job-form-group select {
+        width: 95%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .job-form-btn {
+        width: 100%;
+        background-color: #1d3557;
+        color: white;
+        padding: 12px;
+        font-size: 1rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: 0.3s ease;
+    }
+
+    .job-form-btn:hover {
+        background-color: #457b9d;
+    }
+</style>
+{% endblock %}

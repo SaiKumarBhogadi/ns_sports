@@ -1,0 +1,34 @@
+{% extends 'blog_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile-container">
+    <h2 class="profile-title">{{ profile.user.username }}'s Profile</h2>
+
+    <div class="profile-picture-container">
+        {% if profile.profile_picture %}
+            <img src="{{ profile.profile_picture.url }}" alt="Profile Picture" class="profile-picture">
+        {% else %}
+            <img src="{% static 'default.jpg' %}" alt="Default Profile Picture" class="profile-picture">
+        {% endif %}
+    </div>
+
+    <div class="profile-details">
+        <p><strong>Full Name:</strong> {{ profile.user.full_name }}</p>
+        <p><strong>Email:</strong> {{ profile.user.email }}</p>
+        <p><strong>Location:</strong> {{ profile.location }}</p>
+        <p><strong>Bio:</strong> {{ profile.bio }}</p>
+    </div>
+
+    {% if user == profile.user %}
+        <div class="profile-update-container">
+            <h3 class="update-title">Update Profile</h3>
+            <form method="post" enctype="multipart/form-data" class="update-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="update-btn">Save Changes</button>
+            </form>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,321 @@
+{% extends 'blog_app/base.html' %}
+
+{% block content %}
+
+
+
+
+<style>
+/* Job Section */
+.job-section {
+    text-align: center;
+    padding: 40px 10px; /* Adjusted for better spacing */
+    background-color: #f8f9fc;
+}
+
+/* Job Heading */
+.job-heading {
+    font-size: 2rem;
+    color: #1d3557;
+    margin-bottom: 20px;
+}
+
+/* Add Job Button */
+.job-add-btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    margin-bottom: 20px;
+}
+
+/* Job Container */
+.job-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px; /* Consistent spacing */
+    padding: 20px;
+}
+
+/* Job Card */
+.job-card {
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    width: 100%;
+    max-width: 400px; /* Ensures alignment */
+    min-width: 280px;
+    text-align: left;
+    transition: transform 0.3s ease;
+}
+
+.job-card:hover {
+    transform: translateY(-5px);
+}
+
+/* Job Card Content */
+.job-card-content p {
+    color: #444;
+    font-size: 16px;
+    margin: 5px 0;
+}
+
+.job-card-content strong {
+    color: #005bb5;
+}
+
+/* Job Title */
+.job-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+}
+
+/* Company Logo */
+.job-logo {
+    width: 100%;
+    max-width: 120px; /* Prevents oversized logos */
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Job Company */
+.job-company {
+    color: black;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+/* Location, Salary, and Other Details */
+.job-location, .job-salary, .job-skills, .job-posted, .job-date {
+    font-size: 16px;
+}
+
+/* Apply Button */
+.apply-btn {
+    display: inline-block;
+    background-color: #007bff;
+    color: white;
+    padding: 8px 15px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+.apply-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Edit and Delete Buttons */
+.edit-btn {
+    display: inline-block;
+    background-color: #ffc107;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.delete-btn {
+    display: inline-block;
+    background-color: #dc3545;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 5px;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+/* No Jobs Message */
+.no-jobs {
+    color: #ff4d4d;
+    font-size: 1.2rem;
+}
+
+/* Read More Button */
+.read-more {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    margin-left: 5px;
+    display: none; /* Initially hidden */
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+/* Floating Button for Job Support */
+.job-support-btn {
+    position: fixed;
+    top: 100px;
+    right: 10px;
+    background-color: #007bff;
+    color: white;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    text-align: center;
+    z-index: 1000;
+    animation: blink 1s infinite alternate;
+}
+
+/* Blinking Animation */
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+/* Floating Portfolio Button */
+.portfolio-btn {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    z-index: 1000;
+    background-color: white;
+    border-radius: 50%;
+}
+
+.portfolio-btn i {
+    font-size: 40px;
+    color: #007bff;
+}
+
+.portfolio-tooltip {
+    display: none;
+    background: black;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.portfolio-btn:hover .portfolio-tooltip {
+    display: flex;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .job-card {
+        max-width: 100%; /* Full width on small screens */
+        min-width: 90%;
+    }
+
+    .job-logo {
+        max-width: 100px; /* Slightly smaller on mobile */
+    }
+
+    .job-heading {
+        font-size: 1.8rem;
+    }
+
+    .job-add-btn {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+
+    .apply-btn, .edit-btn, .delete-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+}
+
+</style>
+
+<div class="job-section">
+    <h2 class="job-heading">Available Jobs</h2>
+    
+    {% if user.is_superuser %}
+        <a href="{% url 'blog_app:add_job' %}" class="job-add-btn">➕ Add Job</a>
+        <a href="{% url 'blog_app:admin_job_applications' %}" class="job-add-btn">View Job Applications</a>
+    {% endif %}
+    
+    <div class="job-container">
+        {% for job in jobs %}
+        <div class="job-card">
+            <div class="job-card-content">
+                <h3 class="job-title">{{ job.title }}</h3>
+                <p class="job-location"><strong>Location:</strong> {{ job.location }}</p>
+                <p class="job-salary"><strong>Salary:</strong> {{ job.salary }}</p>
+                
+                <p class="job-skills">
+                    <strong>Required Skills:</strong> 
+                    <span class="short-text">{{ job.required_skills|slice:":50" }}</span>
+                    <span class="dots">...</span>
+                    <span class="full-text" style="display: none;">{{ job.required_skills }}</span>
+                    <button class="read-more">Read More</button>
+                </p>
+                
+                <p class="job-posted"><strong>Posted By:</strong> {{ job.posted_by.username }}</p>
+                <p class="job-date"><strong>Created At:</strong> {{ job.created_at }}</p>
+
+                <a href="{% url 'blog_app:apply_job' job.id %}" class="apply-btn">Apply Now</a>
+               
+
+                
+
+
+                {% if user.is_superuser %}
+                    <a href="{% url 'blog_app:edit_job' job.id %}" class="edit-btn">✏️ Edit</a>
+                    <a href="{% url 'blog_app:delete_job' job.id %}" class="delete-btn" onclick="return confirm('Are you sure you want to delete this job?');">❌ Delete</a>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <p class="no-jobs">No jobs available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const jobSkills = document.querySelectorAll('.job-skills');
+
+    jobSkills.forEach(skill => {
+        const shortText = skill.querySelector('.short-text');
+        const fullText = skill.querySelector('.full-text');
+        const dots = skill.querySelector('.dots');
+        const readMoreBtn = skill.querySelector('.read-more');
+
+        if (fullText.textContent.trim().length > 30) {
+            readMoreBtn.style.display = 'inline-block'; // Show Read More button if needed
+        }
+
+        readMoreBtn.addEventListener('click', function () {
+            if (fullText.style.display === 'none') {
+                fullText.style.display = 'inline';
+                dots.style.display = 'none';
+                shortText.style.display = 'none';
+                readMoreBtn.textContent = 'Read Less';
+            } else {
+                fullText.style.display = 'none';
+                dots.style.display = 'inline';
+                shortText.style.display = 'inline';
+                readMoreBtn.textContent = 'Read More';
+            }
+        });
+    });
+});
+</script>
+
+{% endblock %}

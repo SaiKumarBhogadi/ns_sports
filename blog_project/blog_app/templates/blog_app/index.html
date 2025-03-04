@@ -1,0 +1,68 @@
+{% extends 'blog_app/base.html' %}
+{% load static %}
+
+{% block  content %}
+
+
+<!-- Blog Banner Section -->
+<section class="blog-banner">
+    <div class="container">
+        <h1 class="banner-title">Welcome to Our Blog</h1>
+        <p class="banner-subtitle">Stay updated with the latest trends, tips, and insights.</p>
+
+       <!-- Search Bar -->
+<div class="search-bar">
+    <form method="GET" action="{% url 'blog_app:index' %}">
+        <input type="text" name="q" class="search-input" placeholder="Search blogs..." value="{{ query }}">
+        <button type="submit" class="search-button">Search</button>
+    </form>
+</div>
+
+        
+
+        <!-- CTA Button -->
+        <a href="#blogs" class="cta-btn">Explore Blogs</a>
+    </div>
+</section>
+
+
+
+
+<div class="blog-section" id="blogs">
+    <div class="blog-header">
+        <h2>Latest Blogs</h2>
+        {% if user.is_authenticated %}
+            <a href="{% url 'blog_app:create_blog' %}" class="create-blog-btn">+ Create New Blog</a>
+        {% endif %}
+    </div>
+
+    <div class="blog-container">
+        {% for blog in blogs %}
+        <div class="blog-card">
+            {% if blog.images.all %}
+                <div class="blog-image-wrapper">
+                    <img src="{{ blog.images.first.image.url }}" class="blog-image" alt="Blog Image">
+                </div>
+            {% endif %}
+            <div class="blog-content">
+                <h3 class="blog-title">
+                    <a href="{% url 'blog_app:blog_detail' blog.id %}">{{ blog.title|truncatechars:50 }}</a>
+                </h3>
+                <p class="blog-meta">By <span>{{ blog.author.username }}</span> • {{ blog.created_at|date:"F j, Y" }}</p>
+                <p class="blog-text">{{ blog.content|safe|truncatechars_html:100 }} <p>
+                <a href="{% url 'blog_app:blog_detail' blog.id %}" class="read-more">Read More →</a>
+            </div>
+        </div>
+        {% empty %}
+        <p class="no-blogs">No blogs available.</p>
+        {% endfor %}
+    </div>
+</div>
+
+
+
+
+
+
+
+{% endblock %}

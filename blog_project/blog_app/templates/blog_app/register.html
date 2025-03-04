@@ -1,0 +1,29 @@
+{% extends 'blog_app/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="register">
+<div class="register-container">
+    <h2 class="register-title">Register</h2>
+    <form method="post" class="register-form">
+        {% csrf_token %}
+        <div class="form-group">
+            {{ form.as_p }}
+        </div>
+        <button type="submit" class="register-btn">Register</button>
+    </form>
+
+    {% if form.errors %}
+    <ul class="error-list">
+        {% for field, errors in form.errors.items %}
+            {% for error in errors %}
+                <li class="error-message">{{ error }}</li>
+            {% endfor %}
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+</div>
+
+
+{% endblock %}
