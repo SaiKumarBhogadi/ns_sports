@@ -140,8 +140,8 @@ AUTH_USER_MODEL = 'blog_app.CustomUser'
 # EMAIL_HOST = 'smtp.gmail.com'
 # EMAIL_PORT = 587
 # EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'saikumarbhogadi9@gmail.com'
-# EMAIL_HOST_PASSWORD = 'vidumiyipnmnpvew'  
+# EMAIL_HOST_USER = ''
+# EMAIL_HOST_PASSWORD = ''  
 # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
 
